@@ -17,7 +17,7 @@ def get_student():
         "name": "Missy Miranda",
         "program": "BSIT",
         "year": 3,
-        "section": "3B"
+        "section": "DIJKSTRA"
     })
 
 
