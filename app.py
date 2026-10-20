@@ -1,44 +1,55 @@
-from flask import Flask, jsonify, render_template, request
-
+from flask import Flask, jsonify, request, render_template
 
 app = Flask(__name__)
 
 
-@app.route("/")
+# Home page
+@app.route('/')
 def home():
-	return render_template("index.html")
+    return render_template('index.html')
 
 
-@app.route("/student")
+# Student API
+@app.route('/student')
 def get_student():
-	return jsonify(
-		{
-			"student_id": "24-00310",
-			"name": "Prince Reniel Matutina",
-			"program": "BSIT",
-			"year": 3,
-			"section": "b",
-		}
-	)
+    return jsonify({
+        "student_id": "2026-00076",
+        "name": "Missy Miranda",
+        "program": "BSIT",
+        "year": 3,
+        "section": "3B"
+    })
 
 
-@app.route("/hello")
+# Greeting API
+@app.route('/hello')
 def say_hello():
-	name = request.args.get("name", "Student")
-	return jsonify({"message": f"Hello, {name}!"})
+    name = request.args.get('name', 'Student')
+    return jsonify({
+        "message": f"Hello, {name}!"
+    })
 
 
-@app.route("/academic")
-def get_academic_profile():
-	return jsonify(
-		{
-			"student_id": "24-00310",
-			"program": "BSIT",
-			"year": 3,
-			"section": "b",
-		}
-	)
+# Custom Campus API
+@app.route('/campus')
+def get_campus():
+    return jsonify({
+        "campus": "San Enrique-Campus",
+        "location": "Iloilo",
+        "status": "Open",
+        "type": "University Campus"
+    })
 
 
-if __name__ == "__main__":
-	app.run(debug=True)
+# Second custom API endpoint
+@app.route('/grade')
+def get_grade():
+    return jsonify({
+        "subject": "IT 3120",
+        "grade": 95,
+        "remarks": "Passed"
+    })
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
