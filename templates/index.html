@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Student API Interface | Activity 6</title>
+    <title>Student API Interface</title>
 
     <style>
         * {
@@ -31,12 +31,7 @@
         }
 
         header h1 {
-            margin: 0 0 10px;
-        }
-
-        header p {
             margin: 0;
-            line-height: 1.6;
         }
 
         .card {
@@ -53,11 +48,8 @@
             margin-top: 0;
         }
 
-        p {
-            line-height: 1.6;
-        }
-
         button {
+            display: inline-block;
             background: #1976d2;
             color: #ffffff;
             border: none;
@@ -80,6 +72,7 @@
         }
 
         input {
+            display: block;
             width: 100%;
             max-width: 350px;
             padding: 11px;
@@ -142,16 +135,11 @@
 
     <header>
         <h1>Student API Interface</h1>
-        <p>Explore student information, greetings, and campus details.</p>
     </header>
 
-    <!-- STUDENT INFORMATION API -->
+    <!-- STUDENT INFORMATION -->
     <section class="card">
         <h2>Student Information</h2>
-        <p>
-            Click the button to retrieve student information
-            from the Flask API.
-        </p>
 
         <button type="button" onclick="loadStudent()">
             Load Student Information
@@ -163,7 +151,6 @@
     <!-- GREETING API -->
     <section class="card">
         <h2>Greeting API</h2>
-        <p>Enter your first name to receive a personalized greeting.</p>
 
         <input
             type="text"
@@ -179,13 +166,9 @@
         <div id="greeting" class="result" aria-live="polite"></div>
     </section>
 
-    <!-- CUSTOM CAMPUS API -->
+    <!-- CAMPUS INFORMATION API -->
     <section class="card">
         <h2>Campus Information API</h2>
-        <p>
-            Retrieve campus details using your custom
-            <code>/campus</code> endpoint.
-        </p>
 
         <button type="button" onclick="loadCampus()">
             Load Campus Information
@@ -195,31 +178,27 @@
     </section>
 
     <footer>
-        <p>
-            Laboratory Activity 6_Miranda |
-            Building a Simple Web Interface for Your Flask API
-        </p>
+        <p>Laboratory Activity 6 | Building a Simple Web Interface for Your Flask API</p>
     </footer>
 
     <script>
         // ==========================================
-        // LOAD STUDENT INFORMATION
+        // STUDENT INFORMATION API
         // ==========================================
         async function loadStudent() {
             const result = document.getElementById("result");
 
-            result.textContent = "Loading student information...";
+            result.textContent = "Loading...";
 
             try {
                 const response = await fetch("/student");
 
                 if (!response.ok) {
-                    throw new Error("Unable to retrieve student information.");
+                    throw new Error("Failed to load student information.");
                 }
 
                 const data = await response.json();
 
-                // Build the result safely without inserting HTML from the API.
                 result.replaceChildren();
 
                 const fields = [
@@ -236,6 +215,7 @@
 
                     strong.textContent = label + ": ";
                     paragraph.appendChild(strong);
+
                     paragraph.appendChild(
                         document.createTextNode(
                             value === undefined || value === null
@@ -249,7 +229,8 @@
 
             } catch (error) {
                 result.textContent =
-                    "Error loading student information. Please try again.";
+                    "Unable to load student information. Please try again.";
+
                 console.error("Student API error:", error);
             }
         }
@@ -268,7 +249,7 @@
                 return;
             }
 
-            greeting.textContent = "Loading greeting...";
+            greeting.textContent = "Loading...";
 
             try {
                 const response = await fetch(
@@ -276,7 +257,7 @@
                 );
 
                 if (!response.ok) {
-                    throw new Error("Unable to retrieve greeting.");
+                    throw new Error("Failed to load greeting.");
                 }
 
                 const data = await response.json();
@@ -285,12 +266,13 @@
 
             } catch (error) {
                 greeting.textContent =
-                    "Error loading greeting. Please try again.";
+                    "Unable to load greeting. Please try again.";
+
                 console.error("Greeting API error:", error);
             }
         }
 
-        // Allow the Enter key to submit a greeting.
+        // Allow Enter key to submit a greeting.
         document.getElementById("nameInput").addEventListener(
             "keydown",
             function (event) {
@@ -301,18 +283,18 @@
         );
 
         // ==========================================
-        // CUSTOM CAMPUS API
+        // CAMPUS INFORMATION API
         // ==========================================
         async function loadCampus() {
             const campusResult = document.getElementById("campusResult");
 
-            campusResult.textContent = "Loading campus information...";
+            campusResult.textContent = "Loading...";
 
             try {
                 const response = await fetch("/campus");
 
                 if (!response.ok) {
-                    throw new Error("Unable to retrieve campus information.");
+                    throw new Error("Failed to load campus information.");
                 }
 
                 const data = await response.json();
@@ -332,6 +314,7 @@
 
                     strong.textContent = label + ": ";
                     paragraph.appendChild(strong);
+
                     paragraph.appendChild(
                         document.createTextNode(
                             value === undefined || value === null
@@ -345,7 +328,8 @@
 
             } catch (error) {
                 campusResult.textContent =
-                    "Error loading campus information. Please try again.";
+                    "Unable to load campus information. Please try again.";
+
                 console.error("Campus API error:", error);
             }
         }
