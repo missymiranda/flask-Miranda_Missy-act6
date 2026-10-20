@@ -4,89 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student API Interface</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            max-width: 700px;
+            max-width: 800px;
             margin: 40px auto;
             padding: 20px;
+            background: #eaf5ff;
+            color: #183b56;
         }
+
+        header {
+            text-align: center;
+            background: #1769aa;
+            color: #ffffff;
+            padding: 25px 15px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        .card {
+            background: #d7ebff;
+            border: 1px solid #a7d0f5;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #145da0;
+            margin-top: 0;
+        }
+
         button {
-            padding: 8px 14px;
-            margin: 5px;
+            background: #1976d2;
+            color: #ffffff;
+            border: none;
+            padding: 11px 16px;
+            margin-top: 10px;
+            border-radius: 7px;
             cursor: pointer;
+            font-size: 15px;
         }
-        input { padding: 8px; }
-        #result, #academicResult {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #cccccc;
+
+        button:hover {
+            background: #0d47a1;
+        }
+
+        input {
+            width: 100%;
+            max-width: 350px;
+            padding: 11px;
+            border: 1px solid #8bbce8;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .result {
+            margin-top: 18px;
+            padding: 14px;
+            background: #eff8ff;
+            border: 1px solid #b8dafa;
+            border-radius: 8px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .result:empty {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            color: #456b89;
+            font-size: 13px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                margin: 10px auto;
+                padding: 14px;
+            }
+
+            header {
+                padding: 20px 12px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
+
 <body>
-    <h1>Student API Interface</h1>
-    <button onclick="loadStudent()">Load Student Information</button>
-    <div id="result"></div>
 
-    <hr>
-    <h2>Greeting API</h2>
-    <input type="text" id="nameInput" placeholder="Enter your first name">
-    <button onclick="sayHello()">Say Hello</button>
-    <p id="greeting"></p>
+    <header>
+        <h1>Student API Interface</h1>
+        <p>Explore student information, greetings, and campus details.</p>
+    </header>
 
-    <hr>
-    <h2>Academic Profile API</h2>
-    <button onclick="loadAcademic()">Load Academic Profile</button>
-    <div id="academicResult"></div>
+    <!-- STUDENT INFORMATION -->
+    <section class="card">
+        <h2>Student Information</h2>
+        <p>Click the button to retrieve student information from the Flask API.</p>
+
+        <button onclick="loadStudent()">
+            Load Student Information
+        </button>
+
+        <div id="result" class="result" aria-live="polite"></div>
+    </section>
+
+    <!-- GREETING API -->
+    <section class="card">
+        <h2>Greeting API</h2>
+        <p>Enter your first name to receive a personalized greeting.</p>
+
+        <input
+            type="text"
+            id="nameInput"
+            placeholder="Enter your first name"
+            aria-label="Your first name"
+        >
+
+        <button onclick="sayHello()">Say Hello</button>
+
+        <div id="greeting" class="result" aria-live="polite"></div>
+    </section>
+
+    <!-- CUSTOM CAMPUS API -->
+    <section class="card">
+        <h2>Campus Information API</h2>
+        <p>Retrieve campus information using your custom /campus endpoint.</p>
+
+        <button onclick="loadCampus()">
+            Load Campus Information
+        </button>
+
+        <div id="campusResult" class="result" aria-live="polite"></div>
+    </section>
+
+    <footer>
+        <p>Laboratory Activity 6 | Building a Simple Web Interface for Your Flask API</p>
+    </footer>
 
     <script>
+        // Load Student Information
         function loadStudent() {
+            const result = document.getElementById('result');
+            result.textContent = 'Loading student information...';
+
             fetch('/student')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').innerHTML =
-                        '<p><b>Student ID:</b> ' + data.student_id + '</p>' +
-                        '<p><b>Name:</b> ' + data.name + '</p>' +
-                        '<p><b>Program:</b> ' + data.program + '</p>' +
-                        '<p><b>Year:</b> ' + data.year + '</p>' +
-                        '<p><b>Section:</b> ' + data.section + '</p>';
-                })
-                .catch(error => {
-                    document.getElementById('result').innerHTML =
-                        '<p>Unable to retrieve data.</p>';
-                });
-        }
-
-        function sayHello() {
-            const name = document.getElementById('nameInput').value;
-            fetch('/hello?name=' + encodeURIComponent(name))
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('greeting').innerText = data.message;
-                })
-                .catch(error => {
-                    document.getElementById('greeting').innerText =
-                        'Unable to retrieve greeting.';
-                });
-        }
-
-        function loadAcademic() {
-            fetch('/academic')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('academicResult').innerHTML =
-                        '<p><b>Student ID:</b> ' + data.student_id + '</p>' +
-                        '<p><b>Name:</b> ' + data.name + '</p>' +
-                        '<p><b>Program:</b> ' + data.program + '</p>' +
-                        '<p><b>Year:</b> ' + data.year + '</p>' +
-                        '<p><b>Section:</b> ' + data.section + '</p>';
-                })
-                .catch(error => {
-                    document.getElementById('academicResult').innerText =
-                        'Unable to retrieve academic profile.';
-                });
-        }
-    </script>
-</body>
-</html>
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Request
