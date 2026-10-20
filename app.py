@@ -30,7 +30,7 @@ def say_hello():
     })
 
 
-# Custom Campus API
+# Custom Campus API - Activity 4
 @app.route('/campus')
 def get_campus():
     return jsonify({
@@ -41,7 +41,7 @@ def get_campus():
     })
 
 
-# Second custom API endpoint
+# Second custom API endpoint - Activity 4
 @app.route('/grade')
 def get_grade():
     return jsonify({
